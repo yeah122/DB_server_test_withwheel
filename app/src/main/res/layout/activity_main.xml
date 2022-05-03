@@ -20,6 +20,17 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="닉네임"
+        android:id="@+id/textView_main_nickname" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText_main_nickname" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="비밀번호"
         android:id="@+id/textView_main_country" />
 
@@ -49,5 +60,11 @@
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:id="@+id/textView_main_result" />
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="login하기"/>
 
 </LinearLayout>

@@ -1,6 +1,7 @@
 package com.example.db_server_test_withwheel;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,7 +31,10 @@ public class MainActivity extends AppCompatActivity {
     private EditText mEditTextID;
     private EditText mEditTextPassword;
     private EditText mEditTextPassword2;
+    private EditText mEditTextNickname;
     private TextView mTextViewResult;
+
+    Button loginBtn;
 
 
     @Override
@@ -41,34 +45,45 @@ public class MainActivity extends AppCompatActivity {
         mEditTextID = (EditText)findViewById(R.id.editText_main_name);
         mEditTextPassword = (EditText)findViewById(R.id.editText_main_country);
         mEditTextPassword2 = (EditText) findViewById(R.id.editText_main_country2);
+        mEditTextNickname = (EditText) findViewById(R.id.editText_main_nickname);
 
         mTextViewResult = (TextView)findViewById(R.id.textView_main_result);
 
         mTextViewResult.setMovementMethod(new ScrollingMovementMethod());
 
+        loginBtn = (Button) findViewById(R.id.loginButton);
+
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, login.class);
+                startActivity(intent);
+            }
+        });
 
         Button buttonInsert = (Button)findViewById(R.id.button_main_insert);
         buttonInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String name = mEditTextID.getText().toString();
-                String country = mEditTextPassword.getText().toString();
-                String country2 = mEditTextPassword2.getText().toString();
+                String userid = mEditTextID.getText().toString();
+                String password = mEditTextPassword.getText().toString();
+                String password2 = mEditTextPassword2.getText().toString();
+                String nickname = mEditTextNickname.getText().toString();
 
                 // 비밀번호 확인
-                if(country.equals(country2)){
+                if(password.equals(password2)){
                     InsertData task = new InsertData();
-                    task.execute("http://" + IP_ADDRESS + "/insert.php", name, country);
+                    task.execute("http://" + IP_ADDRESS + "/insert.php", userid, password, nickname);
 
                     mEditTextID.setText("");
                     mEditTextPassword.setText("");
                     mEditTextPassword2.setText("");
+                    mEditTextNickname.setText("");
                 }
 
                 else {
                     Toast.makeText(MainActivity.this, "비밀번호가 다릅니다.", Toast.LENGTH_SHORT).show();
-                    mEditTextID.setText("");
                     mEditTextPassword.setText("");
                     mEditTextPassword2.setText("");
                 }
@@ -105,11 +120,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
 
-            String name = (String)params[1];
-            String country = (String)params[2];
+            String userid = (String)params[1];
+            String password = (String)params[2];
+            String nickname = (String)params[3];
 
             String serverURL = (String)params[0];
-            String postParameters = "name=" + name + "&country=" + country;
+            String postParameters = "userid=" + userid + "&password=" + password + "&nickname=" + nickname;
 
 
             try {
